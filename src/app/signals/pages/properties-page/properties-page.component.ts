@@ -1,4 +1,4 @@
-import { Component, computed, signal } from '@angular/core';
+import { Component, computed, effect, signal } from '@angular/core';
 import { User } from '../../interfaces/user-request.interface';
 
 @Component({
@@ -15,7 +15,18 @@ export class PropertiesPageComponent {
     avatar: 'https://reqres.in/img/faces/7-image.jpg',
   });
 
+  public counter = signal(10)
+
   public fullName = computed( () => `${this.user().first_name} ${this.user().last_name}` );
+
+  public userChangedEffect = effect( () => {
+    console.log('userChangedEffect', this.counter(), this.user())
+  })
+
+
+  increseBy( value: number ) {
+    this.counter.update( current => current + value )
+  }
 
   onFieldUpdated(field: string, value: string) {
 
